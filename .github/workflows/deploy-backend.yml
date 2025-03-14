@@ -28,9 +28,6 @@ jobs:
       - name: Install Prisma CLI
         run: pnpm add -g prisma
 
-      - name: Set Environment Variables
-        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
-
       - name: Ensure Prisma Packages Are in Sync
         run: |
           pnpm update @prisma/client prisma
@@ -48,10 +45,8 @@ jobs:
           script: |
             cd Todo-Backend
             git pull origin main
+            echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
             pnpm install
             pnpm prisma generate
             pnpm run build
             pm2 restart backend || pm2 start dist/main.js --name backend
-          envs: DATABASE_URL
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
