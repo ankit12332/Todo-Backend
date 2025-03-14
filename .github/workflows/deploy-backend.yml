@@ -52,3 +52,6 @@ jobs:
             pnpm prisma generate
             pnpm run build
             pm2 restart backend || pm2 start dist/main.js --name backend
+          envs: DATABASE_URL
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
