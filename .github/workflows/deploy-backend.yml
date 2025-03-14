@@ -31,8 +31,10 @@ jobs:
       - name: Set Environment Variables
         run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
 
-      - name: Generate Prisma Client
-        run: pnpm prisma generate
+      - name: Ensure Prisma Packages Are in Sync
+        run: |
+          pnpm update @prisma/client prisma
+          pnpm prisma generate
 
       - name: Build Project
         run: pnpm run build
